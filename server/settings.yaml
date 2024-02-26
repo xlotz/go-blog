@@ -1,0 +1,22 @@
+mysql:
+  host: 192.168.3.20
+  port: 3306
+  db: goblog
+  username: root
+  password: 12345678
+  log_level: dev
+  max_ideal_time: 4
+  max_open_conns: 300
+  max_idle_conns: 100
+
+logger:
+  level: info
+  prefix: '[gin-blog]'
+  director: log
+  show_line: true
+  log_in_console: true
+
+system:
+  host: 0.0.0.0
+  port: 8080
+  env: release
