@@ -14,7 +14,7 @@ type Mysql struct {
 }
 
 func (m Mysql) DSN() string {
-	return m.Username + ":" + m.Password + "@tcp(" + m.Host + ":" + m.Port + ")/?" + m.Config
+	return m.Username + ":" + m.Password + "@tcp(" + m.Host + ":" + m.Port + ")/" + m.DB + "?" + m.Config
 }
 
 func (m Mysql) GetLogLevel() string {

@@ -2,7 +2,7 @@ package global
 
 import (
 	"github.com/sirupsen/logrus"
-	"go-blog/server/config"
+	"go-blog/config"
 	"gorm.io/gorm"
 )
 
