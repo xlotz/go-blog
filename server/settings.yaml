@@ -15,6 +15,8 @@ logger:
   director: log
   show_line: true
   log_in_console: true
+  log_file_name: "gin_blog"
+  log_max_age: 3
 
 system:
   host: 0.0.0.0
