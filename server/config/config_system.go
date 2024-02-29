@@ -8,6 +8,8 @@ type System struct {
 	Env  string `yaml:"env"`
 }
 
+// 拼接路由地址
+
 func (s System) Addr() string {
 	return fmt.Sprintf("%s:%s", s.Host, s.Port)
 }

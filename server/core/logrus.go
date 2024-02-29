@@ -6,7 +6,6 @@ import (
 	rotatelog "github.com/lestrrat/go-file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"go-blog/global"
-	"io"
 	"io/fs"
 	"os"
 	"path"
@@ -15,6 +14,10 @@ import (
 
 type LogFormatter struct {
 }
+
+/**
+自定义日志格式
+*/
 
 func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var b *bytes.Buffer
@@ -46,14 +49,14 @@ func InitLogger() *logrus.Logger {
 	if err != nil {
 		os.MkdirAll(log.Director, fs.ModePerm)
 	}
-	fileName := path.Join(log.Director, log.LogFileName) + ".log"
-	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0755)
+	//fileName := path.Join(log.Director, log.LogFileName) + ".log"
+	//file, err := os.OpenFile(fileName, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0755)
 	if err != nil {
 		panic(err)
 	}
-	mLog := logrus.New() //新建一个实例
-	//mLog.SetOutput(os.Stdout)          // 设置输出类型
-	//mLog.SetOutput(file)
+	mLog := logrus.New()      //新建一个实例
+	mLog.SetOutput(os.Stdout) // 设置输出类型
+
 	mLog.SetReportCaller(log.ShowLine) // 开启返回函数名和行号
 	mLog.SetFormatter(&LogFormatter{}) // 设置自定义格式
 	level, err := logrus.ParseLevel(log.Level)
@@ -63,17 +66,17 @@ func InitLogger() *logrus.Logger {
 	mLog.SetLevel(level) // 设置最低的级别
 	InitDefaultLogger()  //调用全局
 
-	// 写日志文件
-	writers := []io.Writer{
-		LogFileSplit(fileName),
-		os.Stdout,
-	}
-	fileAndStdoutWriter := io.MultiWriter(writers...)
-	if err == nil {
-		mLog.SetOutput(fileAndStdoutWriter)
-	} else {
-		mLog.SetOutput(file)
-	}
+	//// 写日志文件
+	//writers := []io.Writer{
+	//	LogFileSplit(fileName),
+	//	os.Stdout,
+	//}
+	//fileAndStdoutWriter := io.MultiWriter(writers...)
+	//if err == nil {
+	//	mLog.SetOutput(fileAndStdoutWriter)
+	//} else {
+	//	mLog.SetOutput(file)
+	//}
 
 	return mLog
 }
@@ -99,13 +102,13 @@ func InitDefaultLogger() {
 */
 
 func LogFileSplit(fileName string) *rotatelog.RotateLogs {
-
+	log := global.Config.Logger
 	logier, err := rotatelog.New(
 		fileName+".%Y%m%d",               // 切割后的日志文件名
 		rotatelog.WithLinkName(fileName), // 为最新的日志创建软链接
-		//rotatelog.WithMaxAge(time.Duration(global.Config.Logger.LogMaxAge)*24*time.Hour), // 文件最大保存时间
-		rotatelog.WithRotationTime(24*time.Hour),                    // 文件切割时间间隔
-		rotatelog.WithRotationCount(global.Config.Logger.LogMaxAge), // 最大保存份数 和最大保存时间两个只生效一个
+		//rotatelog.WithMaxAge(time.Duration(log.LogMaxAge)*24*time.Hour), // 文件最大保存时间
+		rotatelog.WithRotationTime(24*time.Hour),   // 文件切割时间间隔
+		rotatelog.WithRotationCount(log.LogMaxAge), // 最大保存份数 和最大保存时间两个只生效一个
 	)
 
 	if err != nil {

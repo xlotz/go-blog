@@ -1,4 +1,0 @@
-[gin-blog] [2024-02-26 22:58:24] [warning] main.go:16 main.main aaaa
-[gin-blog] [2024-02-26 22:58:24] [info] main.go:17 main.main bbbb
-[gin-blog] [2024-02-26 22:58:24] [error] main.go:18 main.main cccc
-[gin-blog] [2024-02-26 22:58:24] [info] gorm.go:47 go-blog/core.InitGorm root:12345678@tcp(192.168.3.20:3306)/goblog?数据库连接成功
